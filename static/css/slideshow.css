@@ -1,0 +1,29 @@
+/* static/css/slideshow.css */
+
+.slideshow-container {
+  position: relative;
+  height: 300px; /* 適切な高さを指定してください */
+  overflow: hidden;
+}
+
+.slide {
+  display: none;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  margin-right: 10px;
+}
+
+.slide.active {
+  display: block;
+}
+
+.slide h2 {
+  margin: 0;
+}
+
+.slide p {
+  margin: 10px 0;
+}
+
+/* 追加のスタイルを必要に応じて指定してください */

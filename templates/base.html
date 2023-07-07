@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- CSSのインポート -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/slideshow.css') }}">
+  <!-- スライドショーのためのjsファイルのインポート -->
+  <script src="../static/js/slideshow.js"></script>
+
+  <title>Anadialog</title>
+</head>
+<body>
+
+  <!-- Anadialogのタイトル -->
+  <div class="icon">
+    <img src="../static/img/Anadialog (1).png">
+  </div>
+  <main>説明</main>
+
+  <!-- タイトル下のログインアウトボタン -->
+  <div class="loginout">
+    <a href = "/login" role="button">login</a>
+    <a href = "/logout" role="button">logout</a>
+  </div>
+
+  <!-- 投稿のCRUD画面 -->
+  {% block content %}
+  {% endblock %}
+
+  <footer>
+    <p>&copy; 2023 My Company. All rights reserved.</p>
+  </footer>
+
+  </div>
+</body>
+</html>

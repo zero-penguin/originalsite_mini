@@ -1,0 +1,11 @@
+.footer {
+  position:fixed;
+  display: flex;
+  bottom: 0%;
+  background-color: black;
+}
+
+.icon {
+  display: block;
+  margin-right: 100%;
+}

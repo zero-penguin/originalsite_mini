@@ -1,0 +1,72 @@
+#databaseの作成
+class Users(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    address_id = db.Column(db.Integer)
+    status_id = db.Column(db.Integer)
+    creates_id = db.Column(db.Integer)
+    created_data = db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.timezone('Asia/Tokyo')))
+    # 実験として、Users_addressだけに子のテーブルを設定している
+    data = db.relationship('Users_address', backref='Users', lazy=True)
+    # 実験として、Createsだけに子のテーブルを設定している
+    creates = db.relationship('Creates', backref='Users', lazy=True)
+    
+class Users_address(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(15), nullable=False)
+    passward = db.Column(db.String(15), nullable=False)
+    created_data = db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.timezone('Asia/Tokyo')))
+    # Usersテーブルのid別（ユーザー別）にユーザーの識別情報を保存
+    Users_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
+
+class Users_status(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(10), nullable=False)
+    gender = db.Column(db.String(10), nullable=False)
+    old = db.Column(db.Integer, nullable=False)
+    created_data= db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.timezone('Asia/Tokyo')))
+
+class Users_admin_permission(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name_id = db.Column(db.Integer)
+    gender = db.Column(db.String(10), nullable=False)
+    old = db.Column(db.Integer, nullable=False)
+    created_data= db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.timezone('Asia/Tokyo')))
+
+class Creates(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title_id = db.Column(db.Integer)
+    img_id = db.Column(db.Integer)
+    comment_id = db.Column(db.Integer)
+    goodcount_id = db.Column(db.Integer)
+    created_data= db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.timezone('Asia/Tokyo')))
+    # Usersテーブルのid別（ユーザー別）に夢日記を保存
+    Users_id = db.Column(db.Integer, db.ForeignKey('Users.id'), nullable=False)
+    # 実験として、Creates_titleテーブルのみに子テーブルを設定
+    children = db.relationship('Creates_title', backref='Creates', lazy=True)
+
+class Creates_title(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(10), nullable=False)
+    content = db.Column(db.String(300), nullable=False)
+    created_date = db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.timezone('Asia/Tokyo')))
+    # Createsテーブルのid別（ユーザー別）に夢日記のタイトルと内容を保存
+    Creates_id = db.Column(db.Integer, db.ForeignKey('Creates.id'), nullable=False)
+
+class Creates_img(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    imgpath = db.VARCHAR(db.String(100))
+    created_data= db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.timezone('Asia/Tokyo')))
+
+class Creates_goodcount(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    supporter_id = db.Column(db.Integer, primary_key=True)
+    count = db.Column(db.Integer, primary_key=True)
+    created_data= db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.timezone('Asia/Tokyo')))
+
+class Creates_comment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    supporter_id = db.Column(db.Integer, primary_key=True)
+    supporter_name = db.Column(db.String(10), nullable=False)
+    supporter_content = db.Column(db.String(100), nullable=False)
+    created_data= db.Column(db.DateTime, nullable=False, default=datetime.now(pytz.timezone('Asia/Tokyo')))
+

@@ -1,0 +1,96 @@
+body {
+  /* 画像ファイルの指定 */
+  background-image: url(../img/backgraund.png);
+
+  /* 画像を常に天地左右の中央に配置 */
+  background-position: center center;
+  
+  /* 画像をタイル状に繰り返し表示しない */
+  background-repeat: no-repeat;
+  
+  /* コンテンツの高さが画像の高さより大きい時、動かないように固定 */
+  background-attachment: fixed;
+  
+  /* 表示するコンテナの大きさに基づいて、背景画像を調整 */
+  background-size: cover;
+  
+  /* 背景画像が読み込まれる前に表示される背景のカラー */
+  background-color: #464646;
+  font-family: "Yu Gothic UI", sans-serif; /* 和風のフォントを設定 */
+  color: #0c0c0c; /* テキストの色を設定 */
+  margin-right: 10%;
+  padding-right: 10%;
+  margin-left: 10%;
+  padding-left: 10%;
+}
+
+h1 {
+  font-size: xx-large;
+  font-family: Impact; /* タイトルのフォントをImpactに設定 */
+  color: rgb(186, 255, 39); /* タイトルの色を黒に設定 */
+  text-align: center;
+}
+
+a {
+  color: black; /* リンクの色を黒に設定 */
+  background-color: aliceblue;
+}
+
+.another_page{
+  display: block; 
+  position: fixed; /*ポジションを固定する*/
+  top: 0px; /*一番上に設置*/
+  left: 0px;
+  z-index: 9999;  /*どの要素よりも上にくるように*/
+  background-color: rgba(252, 66, 91, 0.78); /*メニューバー背景色*/
+  height: 100px;
+  width: 100%; /*横幅を100%に*/
+  padding: 0 0;
+}
+
+.another_page a {
+  float: left; /*メニューを横並びにする*/
+  font-size: 16px;
+  color: #080808;
+  padding: 10px;
+}
+
+.another_page a:after { /*floatでデザインが崩れないように*/
+  display:block;
+  clear: both;
+  content:"";
+}
+
+/* ユーザーネームのデザイン */
+.username{
+
+  background-blend-mode: multiply;
+  color: rgb(255, 255, 255);
+  padding: 10px;
+  font-size: 24px;
+  font-family: 'Arial', sans-serif;
+
+}
+
+/* 空間を作るために */
+.block {
+  width: 200px;
+  height: 180px;
+}
+
+
+article {
+  font-family: "Hiragino Mincho ProN", serif; /* 記事のフォントを和風に設定 */
+  background-color: white; /* 記事の背景色を白に設定 */
+  padding: 10px; /* 記事の内側の余白を10pxに設定 */
+  margin-bottom: 20px; /* 記事の下の余白を20pxに設定 */
+}
+
+h2 {
+  color: black; /* 記事タイトルの色を黒に設定 */
+}
+
+p:first-child {
+  color: rgb(0, 0, 0); /* 記事作成日時の色を灰色に設定 */
+  background-color: #FFF;
+}
