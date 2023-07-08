@@ -1,17 +1,21 @@
 /* static/css/slideshow.css */
 
 .slideshow-container {
+  display: flex;
   position: relative;
-  height: 300px; /* 適切な高さを指定してください */
+  height: 400px; /* 適切な高さを指定してください */
   overflow: hidden;
 }
 
 .slide {
+  float: left;
   display: none;
   background-color: white;
   border-radius: 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
   margin-right: 10px;
+  height: 350px;
+  width: 150px;
 }
 
 .slide.active {

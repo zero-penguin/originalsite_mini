@@ -1,11 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
+
 <h1>Post</h1>
+<div class="create">
 <form method = "POST">
+  <label for ="author">author</label>
+  <input type="text" name = "author">
   <label for ="title">title</label>
   <input type="text" name = "title">
   <label for = "body">content</label>
   <input type="text" name="body">
   <input type="submit" value="post!!">
+</div>
 </form>
 {% endblock %}

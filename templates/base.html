@@ -5,25 +5,19 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- CSSのインポート -->
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/slideshow.css') }}">
-  <!-- スライドショーのためのjsファイルのインポート -->
-  <script src="../static/js/slideshow.js"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
 
   <title>Anadialog</title>
 </head>
 <body>
 
-  <!-- Anadialogのタイトル -->
-  <div class="icon">
-    <img src="../static/img/Anadialog (1).png">
-  </div>
   <main>説明</main>
 
-  <!-- タイトル下のログインアウトボタン -->
-  <div class="loginout">
+  <!-- タイトル下のサインorログインボタン -->
+  <div class="signup">
+    <a href = "/signup" role="button">signup</a>
     <a href = "/login" role="button">login</a>
-    <a href = "/logout" role="button">logout</a>
   </div>
 
   <!-- 投稿のCRUD画面 -->
@@ -35,5 +29,8 @@
   </footer>
 
   </div>
+  
+    <!-- スライドショーのためのjsファイルのインポート -->
+    <script src="../static/js/slideshow.js"></script>
 </body>
 </html>

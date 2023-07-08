@@ -5,7 +5,6 @@ from flask_login import UserMixin, LoginManager, login_user, logout_user, login_
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
-
 # パスワードの非表示化と確認機能のインポート
 from werkzeug.security import generate_password_hash, check_password_hash
 import os
@@ -27,6 +26,7 @@ login_manager.init_app(app)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
+    author = db.Column(db.String(30), nullable=False)
     title = db.Column(db.String(50), nullable=False)
     body = db.Column(db.String(500), nullable=False)
 
@@ -34,16 +34,26 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(30), nullable=False, unique=True)
     password = db.Column(db.String(12),unique=True)
-    
+
+# ゲストページ
 @app.route('/', methods=['GET','POST'])
-@login_required
-def index():
+def guest():
     if request.method == 'GET':
         # Postに保存されている全てのデータの取得
         posts = Post.query.all()
+        return render_template('guest.html', posts=posts)
+
+@app.route('/home', methods=['GET','POST'])
+@login_required
+def home():
+    if request.method == 'GET':
+        # Post/Userに保存されている全てのデータの取得
+        posts = Post.query.all()
         users = User.query.all()
-        return render_template('index.html', posts=posts, users=users)
-    
+        # Postの著者名を取得
+        currentauthor = Post.query.filter(Post.author)
+        return render_template('home.html', posts=posts, users=users, currentauthor=currentauthor )
+ 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
@@ -78,7 +88,8 @@ def login():
              # importしたlogin_userを用いてログインする
             login_user(user)
             # トップページに移動する
-            return redirect('/')
+            return redirect('/home')
+        
     else:
         return render_template('login.html')
     
@@ -94,16 +105,17 @@ def logout():
 def create():
     #新しい投稿がされたなら、createのform内のname=title,bodyを取得する
     if request.method == 'POST':
+        author = request.form.get('author')
         title = request.form.get('title')
         body = request.form.get('body')
         #取得したデータをデータベースに入れる
-        post = Post(title=title, body=body) 
+        post = Post(author=author, title=title, body=body) 
         #入れたデータを保存
         db.session.add(post)
         #保存されたデータに変更
         db.session.commit()
         #変更されたらトップページに戻る
-        return redirect('/')
+        return redirect('/home')
     else:
         return render_template('create.html')
     
@@ -122,7 +134,7 @@ def update(id):
 
         # 更新
         db.session.commit()
-        return redirect('/')
+        return redirect('/home')
 
 @app.route('/<int:id>/delete', methods=['GET'])
 @login_required
@@ -132,7 +144,7 @@ def delete(id):
     
     db.session.delete(post)
     db.session.commit()
-    return redirect('/')
+    return redirect('/home')
 
 @app.cli.command('initdb')
 def initdb_command():

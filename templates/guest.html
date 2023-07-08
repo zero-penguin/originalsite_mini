@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <!-- Anadialogのタイトル -->
+  <div class="icon">
+    <img src="../static/img/Anadialog (1).png">
+  </div>
+  
+  <div class="block2"></div>
+
+  <!-- 閲覧画面 -->
+  <h1>Every Dream</h1>
+  <main>説明</main>
+
+  <!-- ユーザーの投稿のスライドショー -->
+  <div class="slideshow-container">
+    {% for post in posts%}
+      <div class="slide">
+        <h2>{{post.title}}</h2>
+        <p>作成日時：{{post.created_at}}</p>
+        <p>{{post.body}}</p>
+      </div>
+    {% endfor %}
+  </div>
+
+  <!-- 投稿画面 -->
+  <h1>Your Dream</h1>
+  <main>説明</main>
+
+  <nav class="navi">
+    <a href = "/signup" role="button">New post</a>
+  </nav>
+
+  {% for post in posts[::-1][:3] %}
+  <article>
+    <h2>タイトル</h2>
+    <p>作成日時</p>
+    <p>作成内容</p>
+  </article>
+  {% endfor %}
+{% endblock %}
