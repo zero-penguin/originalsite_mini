@@ -1,7 +1,7 @@
 from flask import Flask
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required
+from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required, current_user
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
@@ -35,6 +35,11 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(30), nullable=False, unique=True)
     password = db.Column(db.String(12),unique=True)
 
+# 下記にデコレーターによるセキュリティ強化があるが、その実施に必要なコード    
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
+
 # ゲストページ
 @app.route('/', methods=['GET','POST'])
 def guest():
@@ -47,12 +52,14 @@ def guest():
 @login_required
 def home():
     if request.method == 'GET':
-        # Post/Userに保存されている全てのデータの取得
+
+        name=current_user.username
+        #Post/Userに保存されている全てのデータの取得
         posts = Post.query.all()
-        users = User.query.all()
-        # Postの著者名を取得
-        currentauthor = Post.query.filter(Post.author)
-        return render_template('home.html', posts=posts, users=users, currentauthor=currentauthor )
+        users = User.query.all() 
+        myposts = Post.query.filter_by(author=name) 
+        # Postの著者名を取得してhomeに転送
+        return render_template('home.html', posts=posts, users=users, name=name, myposts=myposts )
  
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -69,11 +76,6 @@ def signup():
         return redirect('/login')
     else:
         return render_template('signup.html')
-
-# 下記にデコレーターによるセキュリティ強化があるが、その実施に必要なコード    
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
     
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -105,7 +107,7 @@ def logout():
 def create():
     #新しい投稿がされたなら、createのform内のname=title,bodyを取得する
     if request.method == 'POST':
-        author = request.form.get('author')
+        author = current_user.username
         title = request.form.get('title')
         body = request.form.get('body')
         #取得したデータをデータベースに入れる
