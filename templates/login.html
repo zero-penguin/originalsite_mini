@@ -1,11 +1,17 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>ログイン</h1>
-<form method = "POST">
-  <label for = "title">ユーザー名</label>
-  <input type="text" name="username">
-  <label for = "body">パスワード</label>
-  <input type="password" name="password">
-  <input type="submit" value="ログイン">
-</form>
+
+  <!-- タイトル下のサインorログインボタン -->
+  <div class="signup">
+    <a href = "/signup" role="button">signup</a>
+  </div>
+    
+  <h1>ログイン</h1>
+  <form method = "POST">
+    <label for = "title">ユーザー名</label>
+    <input type="text" name="username">
+    <label for = "body">パスワード</label>
+    <input type="password" name="password">
+    <input type="submit" value="ログイン">
+  </form>
 {% endblock %}

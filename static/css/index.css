@@ -24,6 +24,11 @@ body {
   padding-left: 10%;
 }
 
+.icon {
+  display: block;
+  margin-right: 50%;
+}
+
 h1 {
   font-size: xx-large;
   font-family: Impact; /* タイトルのフォントをImpactに設定 */

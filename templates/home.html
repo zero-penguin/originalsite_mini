@@ -36,6 +36,7 @@
         <p>{{post.author}}</p>
         <p>作成日時：{{post.created_at}}</p>
         <p>{{post.body}}</p>
+        <p><img src="data:image/png;base64,{{post.image}}"></p>
       </div>
     {% endfor %}
   </div>
@@ -56,6 +57,7 @@
     <a href="/{{mypost.id}}/delete" role="button">delete</a>
     <p>作成日時：{{mypost.created_at}}</p>
     <p>{{mypost.body}}</p>
+    <p><img src="data:image/png;base64,{{mypost.image}}"></p>
   </article>
   {% endfor %}
 {% endblock %}
