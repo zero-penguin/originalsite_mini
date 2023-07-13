@@ -121,7 +121,7 @@ def create():
         createimg()
 
         # PNG画像を読み込む,createimg.pyとほぼ同時刻で作成されるの
-        image = Image.open(f"random_image_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.png")
+        image = Image.open(f"create/createimg/random_image_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.png")
 
         # 画像をバイナリデータに変換
         byte_array = io.BytesIO()

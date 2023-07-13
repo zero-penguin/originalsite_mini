@@ -1,6 +1,8 @@
 from PIL import Image, ImageDraw
 import random
 import datetime
+import os
+import base64
 
 def createimg():
 
@@ -32,7 +34,18 @@ def createimg():
         color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         draw.ellipse([x1, y1, x2, y2], fill=color)
 
-    # 画像を保存
+
+    # 画像をBase64形式でエンコード
+    base64_data = base64.b64encode(image).decode('utf-8')
+
+   # 画像を保存
     now = datetime.datetime.now()
-    filename = f"random_image_{now.strftime('%Y%m%d%H%M')}.png"
-    image.save(filename)
+    directory = "create/createimg"  # 保存先ディレクトリのパスを指定
+    filename = f"random_image_{now.strftime('%Y%m%d%H%M%S')}.png"
+
+    # Base64データをテキストファイルとして保存
+    file_path = os.path.join(directory, filename)
+    with open(file_path, 'w') as file:
+        file.write(base64_data)
+
+    image.save(file_path)
