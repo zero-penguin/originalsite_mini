@@ -1,25 +1,26 @@
 {% extends "base.html" %}
 {% block content %}
 
+  <!-- メニューバー -->
+  <div class="navbar">
+    <ul>
+      <li><a id="link-btn" href="#" role="button">share</a>
+      <li><a href = "/logout" role="button">login</a>
+      <li><a href="/create" role="button">create</a></li>
+      <li><a href="#" role="button">view</a></li>
+    </ul>
+  </div> 
+
   <!-- Anadialogのタイトル -->
   <div class="icon">
     <img src="../static/img/Anadialog (1).png">
   </div>
 
-  <!-- タイトル下のログアウトボタン -->
-  <div class="logout">
-    <a href = "/logout" role="button">logout</a>
-  </div>
-
   <div class="block2"></div>
   
-
   <h3 class="username">
     おかえりなさい。{{name}}
   </h3>
-
-  
-
 
   <div class="block2"></div>
 
@@ -29,7 +30,7 @@
 
   <!-- ユーザーの投稿のスライドショー -->
   <div class="slideshow-container">
-    {% for post in posts%}
+    {% for post in posts[::-1]%}
     
       <div class="slide">
         <h2>{{post.title}}</h2>
@@ -56,8 +57,8 @@
     <a href="/{{mypost.id}}/update" role="button">update</a>
     <a href="/{{mypost.id}}/delete" role="button">delete</a>
     <p>作成日時：{{mypost.created_at}}</p>
-    <p>{{mypost.body}}</p>
     <p><img src="data:image/png;base64,{{mypost.image}}"></p>
+    <p>{{mypost.body}}</p>
   </article>
   {% endfor %}
 {% endblock %}

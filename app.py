@@ -33,8 +33,8 @@ login_manager.init_app(app)
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     author = db.Column(db.String(30), nullable=False)
-    title = db.Column(db.String(50), nullable=False)
-    body = db.Column(db.String(500), nullable=False)
+    title = db.Column(db.String(50), nullable=True)
+    body = db.Column(db.String(500), nullable=True)
     image = db.Column(db.LargeBinary)  # 追加したカラム、生成した画像を保存する
 
 class User(UserMixin, db.Model):
@@ -65,6 +65,7 @@ def home():
         posts = Post.query.all()
         users = User.query.all() 
         myposts = Post.query.filter_by(author=name) 
+        
         # Postの著者名を取得してhomeに転送
         return render_template('home.html', posts=posts, users=users, name=name, myposts=myposts )
  

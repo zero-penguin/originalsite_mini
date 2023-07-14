@@ -1,0 +1,31 @@
+.navbar {
+  background-color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 11;
+}
+
+.navbar ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.navbar li {
+  float: left;
+}
+
+.navbar li a {
+  display: block;
+  color: rgb(1, 1, 1);
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.content {
+  margin-top: 60px; /* メニューバーの高さに合わせてコンテンツを下にずらす */
+}

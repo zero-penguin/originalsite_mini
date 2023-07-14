@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
 
-  <!-- タイトル下のサインorログインボタン -->
-  <div class="signup">
-    <a href = "/signup" role="button">signup</a>
-    <a href = "/login" role="button">login</a>
-  </div>
+  <!-- メニューバー -->
+  <div class="navbar">
+    <ul>
+      <li><a href = "/signup" role="button">signup</a>
+      <li><a href = "/login" role="button">login</a>
+      <li><a href="/signup" role="button">create</a></li>
+      <li><a href="#" role="button">view</a></li>
+    </ul>
+  </div> 
 
   <!-- Anadialogのタイトル -->
   <div class="icon">
@@ -25,6 +29,7 @@
         <h2>{{post.title}}</h2>
         <p>作成日時：{{post.created_at}}</p>
         <p>{{post.body}}</p>
+        <p><img src="data:image/png;base64,{{post.image}}"></p>
       </div>
     {% endfor %}
   </div>
