@@ -39,8 +39,8 @@ class Post(db.Model):
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), nullable=False, unique=True)
-    password = db.Column(db.String(12), nullable=False,unique=True)
+    username = db.Column(db.String(30), nullable=False)
+    password = db.Column(db.String(12), nullable=False)
 
 # 下記にデコレーターによるセキュリティ強化があるが、その実施に必要なコード    
 @login_manager.user_loader
@@ -71,16 +71,29 @@ def home():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        username = request.form.get('username')
-        password = request.form.get('password')
+        signupname = request.form.get('username')
+        signuppassword = request.form.get('password')
+        error = ""
+        users = User.query.all()  # Userテーブルの全ての行を取得
+        usernames = [user.username for user in users]  # 各行のusername,password属性の値をリストとして取得
+        passwords = [user.password for user in users]
 
-        user = User(username=username, password=generate_password_hash(password, method='sha256')) 
-        #入れたデータを保存
-        db.session.add(user)
-        #保存されたデータに変更
-        db.session.commit()
-        #login.htmlに移動
-        return redirect('/login')
+        # ユーザー名かパスワードが誰かと被ってしまった場合は、サインインが出来ないようにする
+        # パスワードに関しては自動で生成しているので、UI側では被っても大丈夫
+        if (signuppassword in passwords) or (signupname in usernames) :
+            # エラー文
+            error = "ユーザー名,又はパスワードが被ってしまいました。別の物を入力してください。"
+            return render_template('signup.html', error=error)
+
+        else:
+            user = User(username=signupname, password=generate_password_hash(signuppassword, method='sha256')) 
+            #入れたデータを保存
+            db.session.add(user)
+            #保存されたデータに変更
+            db.session.commit()
+            #login.htmlに移動
+            return redirect('/login')
+    
     else:
         return render_template('signup.html')
     

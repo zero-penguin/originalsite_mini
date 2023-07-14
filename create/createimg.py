@@ -5,10 +5,9 @@ import os
 import base64
 
 def createimg():
-
     # 画像サイズと背景色を指定
-    width = 500
-    height = 500
+    width = 100
+    height = 100
     background_color = (255, 255, 255)  # RGB形式で指定
 
     # 画像オブジェクトを作成
@@ -34,18 +33,21 @@ def createimg():
         color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
         draw.ellipse([x1, y1, x2, y2], fill=color)
 
-
-    # 画像をBase64形式でエンコード
-    base64_data = base64.b64encode(image).decode('utf-8')
-
-   # 画像を保存
+    # 一時的なファイルパスを作成して画像を保存
     now = datetime.datetime.now()
     directory = "create/createimg"  # 保存先ディレクトリのパスを指定
     filename = f"random_image_{now.strftime('%Y%m%d%H%M%S')}.png"
+    file_path = os.path.join(directory, filename)
+    image.save(file_path)
+
+    # 画像ファイルを読み込んでバイト列に変換
+    with open(file_path, 'rb') as file:
+        image_bytes = file.read()
+
+    # 画像をBase64形式でエンコード
+    base64_data = base64.b64encode(image_bytes).decode('utf-8')
 
     # Base64データをテキストファイルとして保存
-    file_path = os.path.join(directory, filename)
-    with open(file_path, 'w') as file:
+    base64_file_path = os.path.join(directory, f"random_image_{now.strftime('%Y%m%d%H%M%S')}.txt")
+    with open(base64_file_path, 'w') as file:
         file.write(base64_data)
-
-    image.save(file_path)
