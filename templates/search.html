@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+  <h1>{{ name }}様、どのような夢をお探しですか？</h1>
+
+  <form action="{{ url_for('search') }}" method="POST">
+    <input type="text" name="search_query" placeholder="検索キーワードを入力">
+    <button type="submit">検索</button>
+  </form>
+
+    <h2>Search Dreams</h2>
+    <ul>
+      {% if search_query %}
+        {% for post in search_results[::-1]%}
+        <article>
+          <h2 href="">{{post.title}}</h2>
+          <p>{{post.author}}</p>
+          <p><img src="data:image/png;base64,{{post.image}}"></p>
+          <p>{{post.body}}</p>
+        </article>
+        {% endfor %}
+      {% else %}
+        {% for post in posts[::-1]%}
+        <article>  
+          <h2>{{post.title}}</h2>
+          <p>{{post.author}}</p>
+          <p><img src="data:image/png;base64,{{post.image}}"></p>
+          <p>{{post.body}}</p>
+        </article>
+        {% endfor %}
+      {% endif %}
+    </ul>
+
+  <a href="/home" role="button">go home</a>
+
+{% endblock %}

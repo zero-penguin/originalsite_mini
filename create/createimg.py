@@ -40,14 +40,15 @@ def createimg():
     file_path = os.path.join(directory, filename)
     image.save(file_path)
 
-    # 画像ファイルを読み込んでバイト列に変換
-    with open(file_path, 'rb') as file:
-        image_bytes = file.read()
+    # # 画像ファイルを読み込んでバイト列に変換
+    # with open(file_path, 'rb') as file:
+    #     image_bytes = file.read()
 
-    # 画像をBase64形式でエンコード
-    base64_data = base64.b64encode(image_bytes).decode('utf-8')
 
-    # Base64データをテキストファイルとして保存
-    base64_file_path = os.path.join(directory, f"random_image_{now.strftime('%Y%m%d%H%M%S')}.txt")
-    with open(base64_file_path, 'w') as file:
-        file.write(base64_data)
+    # # 画像をBase64形式でエンコード
+    # base64_data = base64.b64encode(image_bytes).decode('utf-8')
+
+    # # Base64データをテキストファイルとして保存
+    # base64_file_path = os.path.join(directory, f"random_image_{now.strftime('%Y%m%d%H%M%S')}.txt")
+    # with open(base64_file_path, 'w') as file:
+    #     file.write(base64_data)

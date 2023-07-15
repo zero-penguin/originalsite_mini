@@ -99,3 +99,7 @@ p:first-child {
   color: rgb(0, 0, 0); /* 記事作成日時の色を灰色に設定 */
   background-color: #FFF;
 }
+
+.mypost-image {
+  margin-right: 300px;
+}

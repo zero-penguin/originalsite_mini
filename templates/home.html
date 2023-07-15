@@ -5,9 +5,9 @@
   <div class="navbar">
     <ul>
       <li><a id="link-btn" href="#" role="button">share</a>
-      <li><a href = "/logout" role="button">login</a>
+      <li><a href = "/logout" role="button">logout</a>
       <li><a href="/create" role="button">create</a></li>
-      <li><a href="#" role="button">view</a></li>
+      <li><a href="/search" role="button">search</a></li>
     </ul>
   </div> 
 
@@ -19,7 +19,7 @@
   <div class="block2"></div>
   
   <h3 class="username">
-    おかえりなさい。{{name}}
+    おかえりなさい。{{name}}様
   </h3>
 
   <div class="block2"></div>
@@ -35,9 +35,8 @@
       <div class="slide">
         <h2>{{post.title}}</h2>
         <p>{{post.author}}</p>
-        <p>作成日時：{{post.created_at}}</p>
-        <p>{{post.body}}</p>
         <p><img src="data:image/png;base64,{{post.image}}"></p>
+        <p>{{post.body}}</p>
       </div>
     {% endfor %}
   </div>
@@ -56,8 +55,7 @@
     <!-- post.idをupdateするためのボタンの作成 -->
     <a href="/{{mypost.id}}/update" role="button">update</a>
     <a href="/{{mypost.id}}/delete" role="button">delete</a>
-    <p>作成日時：{{mypost.created_at}}</p>
-    <p><img src="data:image/png;base64,{{mypost.image}}"></p>
+    <p class="mypost-image"><img src="data:image/png;base64,{{mypost.image}}"></p>
     <p>{{mypost.body}}</p>
   </article>
   {% endfor %}

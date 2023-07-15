@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, url_for
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required, current_user
@@ -32,15 +32,16 @@ login_manager.init_app(app)
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    author = db.Column(db.String(30), nullable=False)
+    author = db.Column(db.String(30), nullable=True)
     title = db.Column(db.String(50), nullable=True)
     body = db.Column(db.String(500), nullable=True)
+    created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     image = db.Column(db.LargeBinary)  # 追加したカラム、生成した画像を保存する
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), nullable=False)
-    password = db.Column(db.String(12), nullable=False)
+    username = db.Column(db.String(30), nullable=True)
+    password = db.Column(db.String(12), nullable=True)
 
 # 下記にデコレーターによるセキュリティ強化があるが、その実施に必要なコード    
 @login_manager.user_loader
@@ -103,16 +104,24 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-
+        error = ""
         # Userのデータベースから合致する名前を探す。
         user = User.query.filter_by(username=username).first() 
+
+        # 存在しないユーザーであればエラーを返す
+        if user is None or not check_password_hash(user.password, password):
+            # usernameまたはpasswordが誤っている旨のflashを表示
+            error = 'Invalid username or password'
+            # loginページへリダイレクト
+            return render_template('login.html', error=error)
+        
         # 探し出されたユーザー名のパスワードと入力されたパスワードが同じならば
         if check_password_hash(user.password, password):
              # importしたlogin_userを用いてログインする
             login_user(user)
             # トップページに移動する
             return redirect('/home')
-        
+
     else:
         return render_template('login.html')
     
@@ -152,7 +161,27 @@ def create():
         return redirect('/home')
     else:
         return render_template('create.html')
-    
+
+@app.route('/search', methods=['GET', 'POST'])
+@login_required
+def search():
+    if request.method == 'GET':
+        name = current_user.username
+        posts = Post.query.all()
+        return render_template('search.html', name=name, posts=posts)
+
+    if request.method == 'POST':
+        search_query = request.form.get('search_query')
+        name = current_user.username
+        if search_query:
+            search_results = Post.query.filter(
+                db.or_(Post.title.ilike(f'%{search_query}%'), Post.body.ilike(f'%{search_query}%'))
+            ).all()
+            return render_template('search.html', name=name, search_query=search_query, search_results=search_results)
+        else:
+            posts = Post.query.all()
+            return render_template('search.html', name=name, posts=posts)
+
 # index.htmlのa href="/{{post.id}}/update"からidを受取り、可変型のルーティングで取得する
 @app.route('/<int:id>/update', methods=['GET','POST'])
 @login_required

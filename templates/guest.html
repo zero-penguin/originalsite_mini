@@ -7,7 +7,7 @@
       <li><a href = "/signup" role="button">signup</a>
       <li><a href = "/login" role="button">login</a>
       <li><a href="/signup" role="button">create</a></li>
-      <li><a href="#" role="button">view</a></li>
+      <li><a href="#" role="button">search</a></li>
     </ul>
   </div> 
 
@@ -27,7 +27,6 @@
     {% for post in posts%}
       <div class="slide">
         <h2>{{post.title}}</h2>
-        <p>作成日時：{{post.created_at}}</p>
         <p>{{post.body}}</p>
         <p><img src="data:image/png;base64,{{post.image}}"></p>
       </div>
@@ -42,11 +41,20 @@
     <a href = "/signup" role="button">New post</a>
   </nav>
 
-  {% for post in posts[::-1][:3] %}
   <article>
     <h2>タイトル</h2>
     <p>作成日時</p>
     <p>作成内容</p>
   </article>
-  {% endfor %}
+  <article>
+    <h2>タイトル</h2>
+    <p>作成日時</p>
+    <p>作成内容</p>
+  </article>
+  <article>
+    <h2>タイトル</h2>
+    <p>作成日時</p>
+    <p>作成内容</p>
+  </article>
+
 {% endblock %}
