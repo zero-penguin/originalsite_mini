@@ -2,53 +2,58 @@ from PIL import Image, ImageDraw
 import random
 import datetime
 import os
-import base64
+from textblob import TextBlob
 
-def createimg():
-    # 画像サイズと背景色を指定
-    width = 100
-    height = 100
-    background_color = (255, 255, 255)  # RGB形式で指定
+def create_pattern(sentiment):
+    width = 500
+    height = 500
 
     # 画像オブジェクトを作成
-    image = Image.new("RGB", (width, height), background_color)
+    image = Image.new("RGB", (width, height), (255, 255, 255))
     draw = ImageDraw.Draw(image)
 
-    # ランダムな図形を描画
-    shape = random.choice(["rectangle", "ellipse"])  # 描画する図形をランダムに選択
-
-    if shape == "rectangle":
-        x1 = random.randint(0, width // 2)
-        y1 = random.randint(0, height // 2)
-        x2 = random.randint(width // 2, width)
-        y2 = random.randint(height // 2, height)
+    # 感情に基づいて模様を描画
+    if sentiment > 0.5:
         color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-        draw.rectangle([x1, y1, x2, y2], fill=color)
+    elif sentiment < -0.5:
+        color = (random.randint(0, 100), random.randint(0, 100), random.randint(0, 100))
+    else:
+        color = (random.randint(100, 200), random.randint(100, 200), random.randint(100, 200))
 
-    elif shape == "ellipse":
-        x1 = random.randint(0, width)
-        y1 = random.randint(0, height)
-        x2 = random.randint(x1, width)
-        y2 = random.randint(y1, height)
-        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-        draw.ellipse([x1, y1, x2, y2], fill=color)
+    draw.rectangle([(0, 0), (width, height)], fill=color)
+
+    # ランダムな模様を追加
+    for _ in range(50):
+        shape = random.choice(["rectangle", "ellipse"])
+        x0 = random.randint(0, width-50)
+        y0 = random.randint(0, height-50)
+        x1 = x0 + random.randint(10, 50)
+        y1 = y0 + random.randint(10, 50)
+
+        if sentiment > 0.5:
+            color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        elif sentiment < -0.5:
+            color = (random.randint(0, 100), random.randint(0, 100), random.randint(0, 100))
+        else:
+            color = (random.randint(100, 200), random.randint(100, 200), random.randint(100, 200))
+
+        if shape == "rectangle":
+            draw.rectangle([(x0, y0), (x1, y1)], fill=color)
+        elif shape == "ellipse":
+            draw.ellipse([(x0, y0), (x1, y1)], fill=color)
+
+    return image
+
+def createimg(body):
+    # テキストの感情分析
+    sentiment = TextBlob(body).sentiment.polarity
+
+    # 感情に基づいて模様を生成
+    image = create_pattern(sentiment)
 
     # 一時的なファイルパスを作成して画像を保存
     now = datetime.datetime.now()
     directory = "create/createimg"  # 保存先ディレクトリのパスを指定
-    filename = f"random_image_{now.strftime('%Y%m%d%H%M%S')}.png"
+    filename = f"create_image_{now.strftime('%Y%m%d%H%M%S')}.png"
     file_path = os.path.join(directory, filename)
     image.save(file_path)
-
-    # # 画像ファイルを読み込んでバイト列に変換
-    # with open(file_path, 'rb') as file:
-    #     image_bytes = file.read()
-
-
-    # # 画像をBase64形式でエンコード
-    # base64_data = base64.b64encode(image_bytes).decode('utf-8')
-
-    # # Base64データをテキストファイルとして保存
-    # base64_file_path = os.path.join(directory, f"random_image_{now.strftime('%Y%m%d%H%M%S')}.txt")
-    # with open(base64_file_path, 'w') as file:
-    #     file.write(base64_data)

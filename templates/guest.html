@@ -26,9 +26,8 @@
   <div class="slideshow-container">
     {% for post in posts%}
       <div class="slide">
-        <h2>{{post.title}}</h2>
-        <p>{{post.body}}</p>
-        <p><img src="data:image/png;base64,{{post.image}}"></p>
+        <h3>{{post.title}}</h3>
+        <p><img src="data:image/png;base64,{{post.image}}", width="150px", height="150px">></p>
       </div>
     {% endfor %}
   </div>

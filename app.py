@@ -14,6 +14,7 @@ import os
 # 画像の保存のためのライブラリ
 from PIL import Image
 import io
+import base64
 
 # インスタンス化
 app = Flask(__name__)
@@ -36,7 +37,7 @@ class Post(db.Model):
     title = db.Column(db.String(50), nullable=True)
     body = db.Column(db.String(500), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
-    image = db.Column(db.LargeBinary)  # 追加したカラム、生成した画像を保存する
+    image = db.Column(db.String(1000), nullable=True) # 追加したカラム、生成した画像を保存する
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -140,19 +141,24 @@ def create():
         author = current_user.username
         title = request.form.get('title')
         body = request.form.get('body')
+        
         # 画像を生成
-        createimg()
+        createimg(body)
 
         # PNG画像を読み込む,createimg.pyとほぼ同時刻で作成されるの
-        image = Image.open(f"create/createimg/random_image_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.png")
+        image = Image.open(f"create/createimg/create_image_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.png")
 
         # 画像をバイナリデータに変換
         byte_array = io.BytesIO()
         image.save(byte_array, format="PNG")
         image_binary = byte_array.getvalue()
 
+        # 画像をBase64形式に変換
+        base64_data = base64.b64encode(image_binary).decode('utf-8')
+
+
         #取得したデータをデータベースに入れる
-        post = Post(author=author, title=title, body=body, image=image_binary) 
+        post = Post(author=author, title=title, body=body, image=base64_data) 
         #入れたデータを保存
         db.session.add(post)
         #保存されたデータに変更
