@@ -141,16 +141,30 @@ def create():
         author = current_user.username
         title = request.form.get('title')
         body = request.form.get('body')
-        
+
         # 画像を生成
-        createimg(body)
+        createimg()
 
         # PNG画像を読み込む,createimg.pyとほぼ同時刻で作成されるの
-        image = Image.open(f"create/createimg/create_image_{datetime.datetime.now().strftime('%Y%m%d%H%M%S')}.png")
+        def imageread():
+            late_time_min = 0
+            now = datetime.datetime.now()
+            # 画像生成と読み込みのラグをPC間で共通して修正
+            while True:
+                late_time_min += 1
+                try:
+                    now = datetime.datetime.now() - datetime.timedelta(seconds=late_time_min)
+                    image = Image.open(f"create/createimg/create_image_{now.strftime('%Y%m%d%H%M%S')}.png")
+                except FileNotFoundError:
+                    continue
+                
+                break
+
+            return image
 
         # 画像をバイナリデータに変換
         byte_array = io.BytesIO()
-        image.save(byte_array, format="PNG")
+        imageread().save(byte_array, format="PNG")
         image_binary = byte_array.getvalue()
 
         # 画像をBase64形式に変換

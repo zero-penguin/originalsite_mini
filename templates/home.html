@@ -54,7 +54,7 @@
     <!-- post.idをupdateするためのボタンの作成 -->
     <a href="/{{mypost.id}}/update" role="button">update</a>
     <a href="/{{mypost.id}}/delete" role="button">delete</a>
-    <p class="mypost-image"><img src="data:image/png;base64,{{mypost.image}}"></p>
+    <p class="mypost-image"><img src="data:image/png;base64,{{mypost.image}}", width="300px", height="300px"></p>
     <p>{{mypost.body}}</p>
   </article>
   {% endfor %}
