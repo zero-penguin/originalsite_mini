@@ -143,7 +143,7 @@ def create():
         body = request.form.get('body')
 
         # 画像を生成
-        createimg()
+        createimg(body)
 
         # PNG画像を読み込む,createimg.pyとほぼ同時刻で作成されるの
         def imageread():
