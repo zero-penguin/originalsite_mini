@@ -1,3 +1,10 @@
+.block1 {
+  height: 150px;
+}
+
+.block2 {
+  height: 300px;
+}
 .footer {
   position:fixed;
   display: flex;

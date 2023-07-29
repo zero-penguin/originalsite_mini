@@ -11,10 +11,9 @@ def create_colorful_circle(color_start,color_end):
     width = 1000
     height = 1000
     radius = 400
-    color_num = 40
+    color_num = 0
     color = (color_num, color_num, color_num)  # 初期の色
     width = height = radius * 2
-
 
     # 画像オブジェクトを作成
     image = Image.new("RGB", (width, height), (255, 255, 255))
@@ -24,7 +23,7 @@ def create_colorful_circle(color_start,color_end):
     cx = width // 2
     cy = height // 2
 
-    # 円の内側から徐々に青から黒になるように描画
+    # 円の内側から徐々に変化するように描画
     for r in range(radius, 0, -1):
         # 円の色を計算
         ratio = r / radius  # 内側からの比率
@@ -52,58 +51,94 @@ def create_pattern(positive_confidence, negative_confidence):
     height = 800
     sentiment = random.uniform(0, 300)
     # 三乗の値が入ります↓
-    random_count = random.randint(10, 15)
+    random_count = random.randint(8, 15)
     
     positive = positive_confidence
     negative = negative_confidence
+
+    middle_x = 0
+    middle_y = 0
+
+    if negative > 0.75:
+        middle_x = random.randint(3, 7) / 10
+        middle_y = 1 - random.randint(3, 7) / 10
+    elif 0.75 > negative > 0.50:
+        middle_x = 1 - random.randint(3, 7) / 10
+        middle_y = random.randint(3, 7) / 10
+    elif 0.50 > negative > 0.25:
+        middle_x = 1 - random.randint(3, 7) / 10
+        middle_y = 1 - random.randint(3, 7) / 10
+    else:
+        middle_x = random.randint(3, 7) / 10
+        middle_y = random.randint(3, 7) / 10
+
     star_min_1 = 3
+
     star_min_2 = 1
-    star_min_3 = 0.5
+
+    star_min_3 = 0.4
+
     star_min_4 = 0.1
 
     # 画像オブジェクトを作成
     image = create_colorful_circle(color_start,color_end)
     draw = ImageDraw.Draw(image)
 
+    if positive > 0.5:
+        R_color = random.randint(0,255)
+        else_color_1 = min(R_color + colorelement_end, 255)
+        else_color_2 = max(R_color - colorelement_end, 0)
+        color_start = (R_color, else_color_1, else_color_2)
+    elif negative > 0.5:
+        G_color = random.randint(0,255)
+        else_color_1 = min(G_color + colorelement_end, 255)
+        else_color_2 = max(G_color - colorelement_end, 0)
+        color_start = (else_color_2, G_color, else_color_1)
+    else:
+        B_color = random.randint(0,255)
+        else_color_1 = min(B_color + colorelement_end, 255)
+        else_color_2 = max(B_color - colorelement_end, 0)
+        color_start = (else_color_1, else_color_2, B_color)
+
     # ランダムな模様を追加
     for _ in range(random_count):
         cx1 = random.gauss(diffusion_point_1, diffusion_point_2) * width
         cy1 = random.gauss(diffusion_point_1, diffusion_point_2) * height
-        radius = random.weibullvariate(star_min_1, 5)
+        radius = random.weibullvariate(star_min_1, 7)
 
         sentiment = random.uniform(0, 300)
 
         if sentiment >200:
-            color = (225,225,255)
+            color = (190,190,255)
         elif sentiment < 100:
-            color =  (255, 225, 225)
+            color =  (255, 190, 190)
         else:
-            color =  (225, 255, 225)
+            color =  (190, 255, 190)
 
         draw.ellipse([(cx1 - radius, cy1 - radius), (cx1 + radius, cy1 + radius)], fill=color)
 
         for _ in range(random_count):
             cx2 = random.gauss(diffusion_point_2, diffusion_point_1) * width
             cy2 = random.gauss(diffusion_point_2, diffusion_point_1) * height
-            radius = random.weibullvariate(star_min_2, 3)
+            radius = random.weibullvariate(star_min_2, 5)
 
             sentiment = random.uniform(0, 300)
 
             if sentiment >200:
-                color = (225,225,255)
+                color = (210,210,255)
             elif sentiment < 100:
-                color =  (255, 225, 225)
+                color =  (255, 210, 210)
             else:
-                color =  (225, 255, 225)
+                color =  (210, 255, 210)
 
             draw.ellipse([(cx2 - radius, cy2 - radius), (cx2 + radius, cy2 + radius)], fill=color)
 
             for _ in range(random_count):
                 weight = random.randint(int(-negative * 1000), int(positive * 1000))
-                weight = weight/500
-                cx3 = random.gauss(0.5, 0.2) * width
-                cy3 = random.gauss(0.5, 0.2) * height
-                radius = random.weibullvariate(star_min_3, 3)
+                weight = weight/100
+                cx3 = random.gauss(middle_x, 0.2) * width
+                cy3 = random.gauss(middle_y, 0.2) * height
+                radius = random.weibullvariate(star_min_3, 1)
 
                 sentiment = random.uniform(0, 300)
 
@@ -118,10 +153,10 @@ def create_pattern(positive_confidence, negative_confidence):
 
                 for _ in range(random_count):
                     weight = random.randint(int(-negative * 1000), int(positive * 1000))
-                    weight = weight/500
-                    cx4 = random.gauss(0.5, 0.1) * width
-                    cy4 = random.gauss(0.5, 0.1) * height
-                    radius = random.weibullvariate(star_min_4, 3)
+                    weight = weight/100
+                    cx4 = random.gauss(middle_x, 0.1) * width
+                    cy4 = random.gauss(middle_y, 0.1) * height
+                    radius = random.weibullvariate(star_min_4, 0.5)
 
                     sentiment = random.uniform(0, 300)
 

@@ -9,14 +9,24 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/signup.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/nav.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/search.css') }}">
 
-  <title>Anadialog</title>
+  <title>Dream Log</title>
 </head>
 <body>
 
-  <!-- 投稿のCRUD画面 -->
-  {% block content %}
-  {% endblock %}
+  <!-- ローディング画面のコンテナ -->
+  <div id="loading-screen">
+    <div class="loading-spinner"></div>
+    <div class="loading-text">Loading...</div>
+  </div>
+
+  <div id="content" style="display: none;"></div>
+    <!-- 投稿のCRUD画面 -->
+    {% block content %}
+    {% endblock %}
+    
+  </div>
 
   <footer>
     <p>&copy; 2023 My Company. All rights reserved.</p>
@@ -25,9 +35,11 @@
   </div>
   
     <!-- 必要なjsファイルのインポート -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="../static/js/goodcount.js"></script>
     <script src="../static/js/slideshow.js"></script>
     <script src="../static/js/nav.js"></script>
     <script src="../static/js/share.js"></script>
-
+    <script src="../static/js/load.js"></script>
 </body>
 </html>

@@ -2,13 +2,13 @@
 {% block content %}
 <h1>Update</h1>
 <form method = "POST">
-  <label for ="title">title</label>
+  <label for ="title">タイトル</label>
   <input type="text" name = "title" value={{post.title}}>
-  <label for = "body">content</label>
+  <label for = "body">夢の内容</label>
   <input type="text" name="body" value={{post.body}}>
   <input type="submit" value="update">
 </form>
 
-<a href="/home" role="button">go home</a>
+<a href="/home" role="button">ホームに戻る</a>
 
 {% endblock %}

@@ -3,17 +3,17 @@
 
 <link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
 
-<h1>Post</h1>
+<h1>あなたの夢をお聞かせください</h1>
 <div class="create">
 <form method = "POST">
-  <label for ="title">title</label>
+  <label for ="title">タイトル</label>
   <input type="text" name = "title">
-  <label for = "body">content</label>
+  <label for = "body">夢の内容</label>
   <input type="text" name="body">
   <input type="submit" value="post!!">
 </div>
 </form>
 
-<a href="/home" role="button">go home</a>
+<a href="/home" role="button">ホームに戻る</a>
 
 {% endblock %}

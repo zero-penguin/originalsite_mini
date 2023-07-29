@@ -1,4 +1,4 @@
-from flask import Flask, url_for
+from flask import Flask, jsonify
 from flask import render_template, request, redirect
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin, LoginManager, login_user, logout_user, login_required, current_user
@@ -38,6 +38,7 @@ class Post(db.Model):
     body = db.Column(db.String(500), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     image = db.Column(db.String(1000), nullable=True) # 追加したカラム、生成した画像を保存する
+
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -228,6 +229,25 @@ def delete(id):
     db.session.delete(post)
     db.session.commit()
     return redirect('/home')
+
+@app.route('/<int:id>/zoom', methods=['POST','GET'])
+def zoom(id):
+    if request.method == 'GET':
+        post = Post.query.get(id)
+        return render_template('zoom.html', post=post)
+    else:
+        post = Post.query.get(id)
+        data = request.get_json()
+        if 'count' in data:
+            count = data['count']
+            if post:
+                post.goodcount += count + 1  # カウントの値を加算
+                db.session.commit()  # データベースに変更を保存
+            else:
+                return jsonify({"message": f"Post with ID {id} not found."}), 404
+        else:
+            return jsonify({"message": "Invalid request data: count not provided."}), 400
+        return render_template('home.html', post=post)
 
 @app.cli.command('initdb')
 def initdb_command():

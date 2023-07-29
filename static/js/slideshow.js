@@ -15,6 +15,7 @@ function showSlides() {
     var slideIndex = (currentSlideIndex + i) % slides.length;
     slides[slideIndex].classList.add('active');
   }
+
 }
 
 // 初期表示時に3つのスライドを表示します
@@ -39,3 +40,14 @@ var slideshowInterval = setInterval(nextSlide, 3000);
 
 // スライドショーのコンテナ要素を取得します
 var slideshowContainer = document.getElementsByClassName('slideshow-container')[0];
+
+// マウスがスライドショー上にある場合、自動ループを停止します
+slideshowContainer.addEventListener('mouseenter', function() {
+  clearInterval(slideshowInterval);
+});
+
+// マウスがスライドショーから外れた場合、再度自動ループを開始します
+slideshowContainer.addEventListener('mouseleave', function() {
+  slideshowInterval = setInterval(nextSlide, 3000);
+});
+
