@@ -27,6 +27,7 @@
   <!-- ユーザーの投稿のスライドショー -->
   <div class="slideshow-container">
     {% for post in posts[::-1][:5]%}
+    <article>  
       <div class="slide">
         <h3>{{post.title}}</h3>
         <p>{{post.author}}</p>
@@ -34,6 +35,7 @@
           <img src="data:image/png;base64,{{post.image}}", width="150px", height="150px">
         </a>
       </div>
+    </article>
     {% endfor %}
     
   </div>

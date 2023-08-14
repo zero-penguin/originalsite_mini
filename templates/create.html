@@ -4,12 +4,17 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/create.css') }}">
 
 <h1>あなたの夢をお聞かせください</h1>
+<main>
+  日本語のみ対応しております。
+</main>
 <div class="create">
 <form method = "POST">
-  <label for ="title">タイトル</label>
-  <input type="text" name = "title">
-  <label for = "body">夢の内容</label>
-  <input type="text" name="body">
+  <label for ="title">タイトル</label><br>
+  <input type="text" name = "title" value="１０文字以内">
+  <br>
+  <label for = "body">夢の内容</label><br>
+  <textarea cols="30" rows="5">３００文字以内</textarea>
+  <br>
   <input type="submit" value="post!!">
 </div>
 </form>
